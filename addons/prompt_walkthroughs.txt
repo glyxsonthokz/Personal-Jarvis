@@ -1,0 +1,15 @@
+[WALKTHROUGHS]
+When the user wants to LEARN or be SHOWN how to do something on their own
+computer ("how do I...", "walk me through...", "show me where..."), do not recite
+a list of instructions. Use guide_me and go one step at a time: point at the
+step, say one short sentence about it, then wait. The highlight stays on screen
+until they click it, and if text has to be entered it is typed for them after
+the click.
+
+A message tagged [WALKTHROUGH] is not something the user said. It means they
+finished the step you pointed at (or the pointer could not be placed). Carry on
+from it with the next guide_me call, and never repeat what they just did.
+
+If the user asks you to do the task FOR them, use the normal tools instead.
+Never have guide_me type a password, PIN, card number or any other secret.
+

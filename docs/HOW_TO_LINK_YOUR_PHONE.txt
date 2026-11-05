@@ -1,0 +1,48 @@
+LINKING YOUR PHONE TO JARVIS
+==============================
+
+ANDROID phone  ->  Jarvis can use your phone from the PC
+--------------------------------------------------------
+Needs: the phone and the PC on the SAME Wi-Fi.
+
+One-time, on the phone:
+ 1. Settings > About phone > tap "Build number" 7 times (turns on Developer options).
+ 2. Settings > System > Developer options > turn on "Wireless debugging".
+    (Some phones: Settings > Developer options > Wireless debugging.)
+ 3. Tap "Wireless debugging" itself, then "Pair device with pairing code".
+    You will see a 6-digit code and an address like 192.168.1.20:37045.
+    Keep that screen open.
+
+Then say to Jarvis:
+    "Set up my phone."                       (first time only: downloads the phone tools)
+    "Link my phone. The pairing address is 192.168.1.20:37045 and the code is 123456.
+     Then connect to 192.168.1.20:41233."
+The second address is the one on the main Wireless debugging screen (different port).
+Jarvis remembers it and reconnects by itself next time. The port can change after the
+phone restarts - then you just give the new address.
+
+Prefer a cable? Turn on "USB debugging" in Developer options, plug the phone in, tap
+Allow on the phone, and say "link my phone over Wi-Fi" - it switches to wireless.
+
+Things you can say afterwards
+    "What notifications do I have on my phone?"
+    "Open WhatsApp on my phone."          "Look at my phone screen - what is on it?"
+    "Send my last photo to this PC."      "Send this file to my phone: <path>"
+    "On my phone, change the wallpaper to something dark."   (multi-step: runs on its own)
+    "Call Mum from my phone."             (you press CONFIRM on the PC first)
+    "Text +91... that I'm late."          (opens the message ready; YOU tap Send)
+
+What it will NOT do on its own: send, post, pay, buy or delete anything, type
+passwords or one-time codes, or unlock the phone. It stops and hands the phone back.
+Typing is plain keyboard characters only (no accents / other scripts).
+
+Switch Wireless debugging OFF when you are not using it.
+
+PHONE  ->  PC  (any phone, including iPhone)
+--------------------------------------------
+Already built in: press the "Remote Control" button in Jarvis to show a QR code, then
+scan it with the phone's camera (same Wi-Fi as the PC). You can then type or speak to Jarvis from the phone's
+browser, and send files to the PC.
+
+iPHONE: Apple does not allow a PC program to drive an iPhone, so only the
+PHONE -> PC direction above works for it.

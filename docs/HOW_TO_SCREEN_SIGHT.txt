@@ -1,0 +1,28 @@
+SCREEN SIGHT - Jarvis can keep looking at your screen, until you say stop
+=========================================================================
+Run Install_Jarvis.bat again to add it (it keeps your key and memory).
+
+JUST SAY
+  "Keep an eye on my screen."          "You can see my screen now."
+  "Watch my screen for the next hour." (it switches itself off after that)
+  "Stop looking."                      "Turn off screen sight."
+  "Never look at windows with 'payroll' in the title."
+  "What's on my screen?" / "What does this error mean?"   (once it is on)
+
+HOW YOU KNOW, AND HOW TO STOP IT
+  A red badge stays on the window the whole time it is on: "SCREEN SIGHT ON - click to stop".
+  Click it, say "stop looking", or just close Jarvis. It starts OFF every time Jarvis launches,
+  unless you explicitly said "keep it on even after a restart".
+
+WHAT IS SENT
+  A small picture of your screen goes to Gemini (Google's service) every few seconds while the
+  picture is changing, and now and then when it is not. Nothing is saved on your PC.
+  It is paused while Jarvis is asleep (wake-word mode) or disconnected.
+  Windows whose title looks private are skipped: password managers, private/incognito browsing,
+  banking and sign-in pages, plus any words you add. A title is only a hint: a page can be
+  sensitive without saying so, which is why the badge and the off switch matter most.
+
+GOOD TO KNOW
+  It looks at your main screen only. It uses more of your Gemini allowance while the screen is busy.
+  While it is on, Jarvis does not comment unprompted; it answers when you ask.
+  The "watch for something" rules in the automations feature are separate, and look on their own schedule.

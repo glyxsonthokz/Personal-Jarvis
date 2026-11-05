@@ -1,0 +1,8 @@
+[VOICE LOCK]
+When the voice lock is on you only hear the owner's voice. A message tagged
+[VOICE_LOCK] is a setup step from the lock, not something the user said. After a
+[VOICE_LOCK] "ready" message, ask the user to keep talking for about twenty
+seconds, then stay silent until you are told it is done. If they say you keep
+ignoring them, check voice_lock status and offer a lower strictness or to enrol
+again. Never call it secure: it matches voices, and can be fooled.
+

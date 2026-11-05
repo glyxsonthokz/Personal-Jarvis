@@ -1,0 +1,32 @@
+THE EARTH
+=========
+Run Install_Jarvis.bat again to add it (it keeps your key and memory). The first time you
+open the Earth it downloads about 3 MB of imagery, so the globe appears a few seconds late.
+
+JUST SAY
+  "Show me the earth."                 "Switch to the holographic map."
+  "Take me to Imphal."                 "Zoom in."   "Zoom out."   "Stop spinning."
+  "Where is the ISS?"                  "When will the ISS pass over Delhi?"
+  "Any earthquakes today?"             "Show flights here."   (zoom in to a region first)
+  "How far is Delhi from London?"      (draws the route on the globe)
+  "What time is it in Tokyo, and what's the weather there?"
+  "Close the earth."
+
+BY HAND
+  Drag to spin or pan. Scroll wheel to zoom. Click anywhere for the local time and weather there.
+  Double-click to fly in. Round buttons on the right: zoom, home, then layers (earthquakes,
+  aircraft, satellites, day/night, place names), the map style, and close.
+
+WHAT YOU ARE LOOKING AT
+  * The night side, with city lights, is the real one, for this moment.
+  * Earthquakes are the last week's magnitude 4.5 and above (USGS). The ISS and its orbit path are
+    worked out on your PC from public orbit data (CelesTrak).
+  * Aircraft come from the community ADS-B network adsb.lol: only planes within about 250 nautical
+    miles of the centre of the view, and only when zoomed into a region. Coverage depends on volunteers.
+  * Zoom in far enough and the globe becomes a flat satellite map (Esri World Imagery), or a dark map
+    in the holographic style (CARTO).
+
+NEEDS THE INTERNET for imagery (once), live data and map tiles. Offline you still get the globe if
+it was opened before; the live layers show a note instead.
+Map tiles come from Esri's and CARTO's public servers, as in the original demo: fine for personal use;
+check their terms before using this for anything else.

@@ -1,0 +1,49 @@
+VOICE LOCK + AUTOMATIONS
+========================
+Run Install_Jarvis.bat again to add these (it keeps your key and memory).
+The first time you use the voice lock it downloads a 26 MB voice model.
+
+VOICE LOCK - Jarvis only listens to YOU
+-------------------------------------
+  "Learn my voice."            Jarvis asks you to keep talking for ~20 seconds
+                               (reading something aloud works well), then it is ON.
+  "Turn off the voice lock."   /  "Turn on the voice lock."
+  "It keeps ignoring me."      -> say "make the voice lock less strict" or enrol again
+                                  in the room you normally use.
+  "It's letting others in."    -> "make the voice lock stricter".
+  "Forget my voice."           deletes the saved voice print.
+
+Good to know
+  * It adds about a second before Jarvis starts hearing a command - it needs a
+    moment of your speech to be sure it is you.
+  * It matches voices. It is NOT a security lock: a recording of you, or a very
+    similar voice, can get through, and you can be turned away on a one-word
+    command or in a noisy room.
+  * Speech it rejects is never sent to the cloud.
+  * Only a voice print (256 numbers) is saved, not your recording.
+
+AUTOMATIONS - standing rules, no need to ask each time (Windows)
+----------------------------------------------------------------
+  "Close Discord whenever I open it."
+  "Block YouTube."                      (closes that browser tab, not the whole browser)
+  "Focus mode for an hour - only Word and Chrome."
+  "Take notes of everything I say."     /  "Stop the notes."  /  "Open my notes."
+  "Tell me if I'm scrolling Instagram."   (looks at your screen every 30 s)
+  "What rules do I have?"   "Pause all rules."   "Remove the Discord rule."
+
+How it behaves
+  * Closing is polite - like clicking the X - so an app with unsaved work asks
+    you to save instead of losing it. Only if you say "force" does it escalate.
+  * Apps already open when a rule starts are left alone; newly opened ones are
+    closed. It cannot stop an app launching - it closes it about a second or two
+    later.
+  * Jarvis itself, Explorer, the taskbar and Task Manager are never touched, so a
+    rule can never lock you out.
+  * Notes go to Documents\Jarvis Notes. While notes run, Jarvis's voice is muted
+    and it does not act on what it overhears. Say "stop the notes" to bring it
+    back. Notes use whatever Gemini hears, so they are as accurate as its
+    transcription. With the voice lock on, only your voice is written down unless
+    you say "record everyone".
+  * "Watch the screen" rules send a small screenshot to Gemini every few seconds
+    while they are on. Jarvis tells you that when you set one up.
+  * Rules are saved and come back when Jarvis starts.
