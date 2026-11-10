@@ -29,7 +29,7 @@ assert not bad, "an upstream change broke a patch:\n" + "\n".join(bad)
 MARKERS = {"main.py": ["addon: voice lock", "addon: notes hook", "addon: quiet", "addon: screen sight frames", "addon: screen sight method", "addon: screen sight bind"],
            "ui.py": ["addon: orb hud", "addon: earth cover", "HOLOGRAM ORB", "addon: orb cycle"],
            "dashboard/server.py": ["addon: refresh ip"], "memory/config_manager.py": ['("face", "core", "orb")'],
-           "core/prompt.txt": ["[WALKTHROUGHS]", "[PHONE LINK]", "[AUTOMATIONS]", "[VOICE LOCK]", "[EARTH]", "[SCREEN SIGHT]"]}
+           "core/prompt.txt": ["[WALKTHROUGHS]", "[PHONE LINK]", "[AUTOMATIONS]", "[VOICE LOCK]", "[EARTH]", "[SCREEN SIGHT]", "[SECOND BRAIN]"]}
 for f, marks in MARKERS.items():
     t = (app / f).read_text(encoding="utf-8")
     for m in marks:
@@ -37,10 +37,11 @@ for f, marks in MARKERS.items():
     if f.endswith(".py"):
         ast.parse(t.replace("\r\n", "\n"))
 assert 'APP_VERSION  = "JARVIS"' in (app / "ui.py").read_text(encoding="utf-8")
-for name in ("guide_me", "phone_link", "voice_lock", "automations", "earth", "screen_sight"):
+for name in ("guide_me", "phone_link", "voice_lock", "automations", "earth", "screen_sight", "second_brain"):
     assert (app / "actions" / f"{name}.py").exists(), name
-for name in ("voice_gate", "automations", "earth_geo", "earth_data", "earth_view", "orb_hud", "screen_sight", "gui_call"):
+for name in ("voice_gate", "automations", "earth_geo", "earth_data", "earth_view", "orb_hud", "screen_sight", "gui_call", "vault", "second_brain"):
     assert (app / "core" / f"{name}.py").exists(), name
+assert (app / "second_brain" / "worker.py").exists(), "Cognee worker was not installed"
 before = {p: p.read_bytes() for p in (app / "main.py", app / "ui.py", app / "core" / "prompt.txt", app / "requirements.txt")}
 install()
 for p, b in before.items():

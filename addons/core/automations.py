@@ -277,8 +277,16 @@ class Engine:
         until = time.time() + minutes * 60 if minutes else None
         return self._new("focus", allow=_split(allow), until=until, force=bool(force))
 
-    def add_notes(self, quiet=True, all_voices=False, path: Optional[str] = None) -> dict:
+    def add_notes(self, quiet=True, all_voices=False, path: Optional[str] = None, private: bool = False) -> dict:
+        """A new spoken-notes session. By default it is a note in the user's Obsidian vault (see core/vault.py);
+        a plain text file is the fallback, or what an explicit `path` asks for."""
         if not path:
+            try:
+                from core import vault as _vault
+                note = _vault.get_vault().new_session("Spoken notes", private=private)
+                return self._new("notes", file=str(note), quiet=bool(quiet), all_voices=bool(all_voices), vault=True, private=bool(private))
+            except Exception as e:                            # noqa: BLE001
+                self._log(f"could not start a note in the vault ({e}); using a text file instead")
             folder = Path.home() / "Documents" / "Jarvis Notes"
             path = str(folder / f"Notes {datetime.now():%Y-%m-%d %H.%M}.txt")
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -295,24 +303,44 @@ class Engine:
         which = (which or "").strip().lower()
         with self._lock:
             keep = [r for r in self.rules if not (which in ("all", "everything") or r["id"] == which or r["type"] == which)]
+            gone = [r for r in self.rules if r not in keep and r.get("enabled", True)]
             n = len(self.rules) - len(keep)
             self.rules = keep
             for rid in [i for i in self._rt if i not in {r["id"] for r in keep}]:
                 self._rt.pop(rid, None)
             self._save()
+        if gone:
+            self._notes_closed(gone)
         return n
+
+    def _notes_closed(self, rules: list) -> None:
+        """Finished spoken notes go to Cognee, on a background thread, if it is switched on. Never raises."""
+        files = [r["file"] for r in rules if r["type"] == "notes" and r.get("vault") and not r.get("private")]
+        if files:
+            def go():
+                try:
+                    from core import second_brain
+                    second_brain.on_notes_closed(files[-1])
+                except Exception:                             # noqa: BLE001
+                    pass
+            threading.Thread(target=go, daemon=True, name="notes-to-cognee").start()
 
     def set_enabled(self, which: str, on: bool) -> int:
         which = (which or "").strip().lower()
         n = 0
+        closed = []
         with self._lock:
             for r in self.rules:
                 if which in ("all", "everything") or r["id"] == which or r["type"] == which:
+                    if not on and r.get("enabled", True):
+                        closed.append(r)
                     r["enabled"] = on
                     if on:
                         self._init_rt(r)
                     n += 1
             self._save()
+        if closed:
+            self._notes_closed(closed)
         return n
 
     def active(self, rtype: str) -> list[dict]:
@@ -328,8 +356,12 @@ class Engine:
             return
         for r in self.active("notes"):
             try:
-                with open(r["file"], "a", encoding="utf-8") as f:
-                    f.write(f"[{datetime.now():%H:%M:%S}] {text}\n")
+                if r.get("vault"):
+                    from core import vault as _vault
+                    _vault.append_bullet(r["file"], text)
+                else:
+                    with open(r["file"], "a", encoding="utf-8") as f:
+                        f.write(f"[{datetime.now():%H:%M:%S}] {text}\n")
             except Exception as e:                            # noqa: BLE001
                 self._log(f"could not write to {r['file']}: {e}")
 

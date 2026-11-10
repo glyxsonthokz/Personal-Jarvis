@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+* Second brain: spoken notes and anything you ask Jarvis to remember are written to your **Obsidian** vault (Markdown with properties, daily pages and backlinks) instead of a text file.
+* Optional **Cognee** knowledge graph over those notes, in its own environment, off until you ask, never fed private notes; falls back to keyword search of the vault.
+* New `second_brain` tool: remember, daily, recall, find, open, sync, import_memory, forget_graph, setup, status.
+
 ## 1.0.0
 Everything in this repository, as one release:
 * Installer (`Install_Jarvis.bat`): installs under `%USERPROFILE%\Jarvis`, one desktop icon, brings settings across from an earlier `Mark-LVI` folder.

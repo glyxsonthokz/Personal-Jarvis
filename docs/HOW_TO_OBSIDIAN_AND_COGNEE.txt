@@ -1,0 +1,56 @@
+OBSIDIAN AND COGNEE - where Jarvis keeps what you tell it
+=========================================================
+Run Install_Jarvis.bat again to add it (it keeps your key and memory).
+
+WHAT CHANGED
+  Spoken notes, and anything you ask Jarvis to remember, are now written into your Obsidian vault as ordinary
+  Markdown notes instead of a text file. Obsidian is just a folder of .md files, so nothing is locked in: you can
+  read, edit, search, link and sync them like any other note.
+  Cognee (optional, off by default) can then read those notes and build a knowledge graph, so questions like
+  "what did we decide about the launch?" are answered from your whole history, not just by matching words.
+
+FIRST TIME
+  Nothing to install for the Obsidian part. Jarvis uses your Obsidian vault if you have exactly one; otherwise it
+  creates "Documents\Jarvis Vault" (in Obsidian choose "Open folder as vault" and pick it, once).
+  To use a specific vault, say: "Use my vault at D:\Notes\Brain."
+  Everything Jarvis writes goes in a folder called Jarvis inside the vault, so it never mixes with your own notes:
+      Jarvis\Notes\2026-11-05 1423 - Spoken notes.md      a session you dictated, or something you asked it to remember
+      Jarvis\Daily\2026-11-05.md                          one page per day, linking to that day's notes
+      Jarvis\Memory.md                                    what Jarvis remembered before this feature (after "import my old memory")
+
+JUST SAY
+  "Remember that Asha prefers morning meetings."          "Remember this privately: ..."   (never sent to Cognee)
+  "Take notes of everything I say."  ...  "Stop the notes."     (written live into a new Obsidian note)
+  "Add to today's page that I called the lab."
+  "What did I decide about the launch?"                   "What did Asha say last week?"
+  "Find my notes on the incubator."                       "Search my whole vault for batteries."
+  "Open my notes in Obsidian."   "Open today's page."     "Open the note about the launch."
+  "Import my old memory."                                 "Set up my second brain."
+
+COGNEE - OPT IN, AND WHAT IT COSTS
+  Say "Set up my second brain with Cognee." Jarvis will tell you three things first, and only go ahead if you say yes:
+    * It needs about 1.5 GB of disk and a few minutes to download. It lives in its own folder (second_brain\venv) so it
+      cannot interfere with Jarvis. Removing it is deleting that folder.
+    * It sends the TEXT OF YOUR NOTES to Gemini (the same service and key Jarvis already uses) so a language model can pick
+      out people, projects, decisions and dates. Your questions are sent the same way. Cognee's own databases stay on this PC.
+    * Your Obsidian notes work exactly the same without it.
+  When a dictated session ends, the finished note is added to Cognee in the background. "Sync my notes" adds anything it
+  has not seen; changed notes are re-sent, unchanged ones are not. "Turn Cognee off" stops all of it.
+  "Clear the knowledge graph" asks you to confirm, and removes only what Cognee built. Your notes are never deleted.
+  A note is never sent if it is private ("remember this privately", or a notes session you called private), or if you add
+  the property  ingest: false  to it in Obsidian yourself.
+
+IF COGNEE CAN'T ANSWER
+  Jarvis says so and falls back to a keyword search of your notes, so you still get an answer.
+
+GOOD TO KNOW
+  * Building the graph is slow and uses your Gemini allowance: a long note can take a minute or more.
+  * The first time Cognee runs it downloads a small tokenizer file, so it needs the internet.
+  * The Gemini model names Cognee uses are in config\second_brain.json (llm_model, embedding_model). If Google retires
+    one, change it there. Defaults: gemini/gemini-2.5-flash and gemini/gemini-embedding-001.
+  * Old notes made as text files are in Documents\Jarvis Notes. They are not moved; drag them into the vault if you want them.
+  * Searches look only in the Jarvis folder unless you say "my whole vault".
+
+NOT TESTED HERE
+  Everything is tested except Cognee building a graph through Gemini, which needs a live key and internet that the test
+  environment did not have. If that step misbehaves, say "what's the second brain status?" and read out any error.

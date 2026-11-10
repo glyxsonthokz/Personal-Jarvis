@@ -77,9 +77,21 @@ def automations(parameters: dict = None, player=None, session_memory=None) -> st
     if action == "notes_start":
         if e.active("notes"):
             return outcome.failed("automations", "notes are already being taken")
-        r = e.add_notes(quiet=p.get("quiet", True) is not False, all_voices=bool(p.get("all_voices")))
-        return outcome.done("automations", rule=r["id"], writing_to=r["file"], quiet=r["quiet"]) + (
-            " -- NOTE-TAKING IS ON. Say one short sentence that you are writing everything down, then "
+        private = bool(p.get("private"))
+        r = e.add_notes(quiet=p.get("quiet", True) is not False, all_voices=bool(p.get("all_voices")), private=private)
+        where = r["file"]
+        graph = ""
+        if r.get("vault"):
+            try:
+                from core import second_brain, vault as vault_mod
+                v = vault_mod.get_vault(create=False)
+                where = f"Obsidian note {v.rel(r['file'])}" if v else r["file"]
+                graph = ("kept private: never sent to Cognee" if private else
+                         "will be added to Cognee when you stop" if second_brain.enabled() else "Cognee is off")
+            except Exception:                                 # noqa: BLE001
+                pass
+        return outcome.done("automations", rule=r["id"], writing_to=where, quiet=r["quiet"], **({"knowledge_graph": graph} if graph else {})) + (
+            " -- NOTE-TAKING IS ON. Say one short sentence that you are writing everything down" + (" in their Obsidian vault" if r.get("vault") else "") + ", then "
             "stay COMPLETELY silent: your voice is muted while it runs, so do not answer or act on "
             "anything you hear. Only do something if the user tells you to stop or pause the notes."
             + (" Only the enrolled voice is written down unless they asked for every voice." if not r["all_voices"] else ""))
@@ -94,6 +106,11 @@ def automations(parameters: dict = None, player=None, session_memory=None) -> st
             return outcome.failed("automations", "there are no notes yet")
         if action == "notes_open":
             try:
+                rule = next((r for r in reversed(e.rules) if r["type"] == "notes"), {})
+                if rule.get("vault"):
+                    from core import vault as vault_mod
+                    how = vault_mod.get_vault(create=False).open(__import__("pathlib").Path(path))
+                    return outcome.done("automations", opened=path, in_app=how)
                 (os.startfile(path) if sys.platform == "win32" else None)          # noqa: S606
             except Exception as ex:                                              # noqa: BLE001
                 return outcome.failed("automations", f"could not open the notes: {ex}", file=path)
@@ -116,7 +133,7 @@ TOOL = {
         "STANDING INSTRUCTIONS that run by themselves in the background, without the user asking each "
         "time. Use when they set up a rule: 'close Discord whenever I open it', 'block YouTube', "
         "'focus mode - only let me use Word and Chrome', 'don't let me open any other apps for an "
-        "hour', 'take notes of everything I say', 'write down this meeting', 'tell me if I'm on "
+        "hour', 'take notes of everything I say', 'write down this meeting' (written as a note in the user's Obsidian vault), 'tell me if I'm on "
         "Instagram', 'stop focus mode', 'what rules do I have?'. Rules are saved and survive restarts. "
         "Actions: 'block' (apps = names, titles = words in a window title such as a website, "
         "minutes = optional duration, force = hard-kill stubborn apps, include_running = also close what "
@@ -142,6 +159,7 @@ TOOL = {
             "force": {"type": "BOOLEAN", "description": "Hard-kill apps that ignore a polite close (can lose unsaved work)."},
             "include_running": {"type": "BOOLEAN", "description": "For 'block': also close matching apps that are open right now."},
             "quiet": {"type": "BOOLEAN", "description": "For 'notes_start': stay silent while taking notes (default true)."},
+            "private": {"type": "BOOLEAN", "description": "For 'notes_start': keep this session out of the Cognee knowledge graph (it is still saved in Obsidian)."},
             "all_voices": {"type": "BOOLEAN", "description": "For 'notes_start': write down every voice, not just the enrolled one."},
             "condition": {"type": "STRING", "description": "For 'watch': what to look for on the screen, in plain words."},
             "interval": {"type": "NUMBER", "description": "For 'watch': seconds between looks (minimum 15, default 30)."},

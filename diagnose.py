@@ -59,6 +59,25 @@ out(f"{len(acts)} action files. guide_me.py: {'guide_me.py' in acts} | phone_lin
 prompt = (APP / "core" / "prompt.txt").read_text(encoding="utf-8", errors="replace") if (APP / "core" / "prompt.txt").exists() else ""
 out(f"prompt has [WALKTHROUGHS]: {'[WALKTHROUGHS]' in prompt} | [PHONE LINK]: {'[PHONE LINK]' in prompt}")
 
+section("Second brain (Obsidian + Cognee)")
+import json as _json
+_sb = APP / "config" / "second_brain.json"
+if _sb.exists():
+    try:
+        _c = _json.loads(_sb.read_text(encoding="utf-8"))
+        out(f"vault: {_c.get('vault')} | folder exists: {Path(str(_c.get('vault'))).exists()} | Cognee switched on: {bool(_c.get('cognee'))}")
+    except Exception as e:  # noqa: BLE001
+        out(f"could not read second_brain.json: {e}")
+else:
+    out("not set up yet (a vault is chosen the first time you ask Jarvis to remember something)")
+_d = APP / "second_brain"
+out(f"worker.py present: {(_d / 'worker.py').exists()} | Cognee installed: {(_d / 'ready.json').exists()}")
+_lg = _d / "worker.log"
+if _lg.exists():
+    out("last lines of Cognee's log:")
+    for _l in _lg.read_text(encoding="utf-8", errors="replace").splitlines()[-6:]:
+        out("  " + _l[:200])
+
 section("Needed packages (each imported on its own, so a crash cannot hide)")
 for mod in ("fastapi", "uvicorn", "cryptography", "multipart", "qrcode", "PyQt6.QtWidgets",
             "google.genai", "pyautogui", "sounddevice"):

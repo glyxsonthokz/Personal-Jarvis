@@ -32,6 +32,7 @@ app's own start-up messages, and saves `Jarvis-report.txt` (API keys are never w
 | **Orb HUD** | a holographic globe look for the main window (the HUD button cycles styles) | `docs/READ_ME_FIRST.txt` |
 | **Earth** | "Show me the earth", "where is the ISS?", "any earthquakes today?" | `docs/HOW_TO_EARTH.txt` |
 | **Screen sight** | "Keep an eye on my screen" ... "stop looking" | `docs/HOW_TO_SCREEN_SIGHT.txt` |
+| **Second brain** (Obsidian + Cognee) | "Remember that ...", "what did I decide about the launch?", "open my notes in Obsidian"; spoken notes land in your vault | `docs/HOW_TO_OBSIDIAN_AND_COGNEE.txt` |
 
 ## How it works
 
@@ -57,6 +58,9 @@ an upstream change breaks a hook.
   *matching*, not a security lock: a recording of you, or a very similar voice, can get through.
 * **Automations** close windows politely (like clicking X), never touch Jarvis itself, Explorer, the taskbar or Task
   Manager, and "watch the screen" rules say that screenshots are being sent.
+* **Second brain**: notes are plain Markdown files in your own Obsidian vault. Cognee is **off until you ask**; when on, the
+  *text of your notes* goes to Gemini to build the graph (its databases stay on your PC), and notes marked private never are.
+  Cognee runs in its own folder and its own Python environment (about 1.5 GB), so it cannot disturb Jarvis.
 * **Phone link** never sends a message, places a call, pays, deletes, types a secret or unlocks the phone without you.
 * Nothing in this repository contains keys or personal data: `config/`, `cache/`, `models/` and `tools/platform-tools/`
   are git-ignored.
@@ -68,8 +72,9 @@ Install_Jarvis.bat        the installer (updates in place, migrates the old fold
 Diagnose_Jarvis.bat       health check  ->  diagnose.py
 addons/
   install_addons.py       copies files, patches prompt/requirements/main/ui/dashboard, idempotent
-  actions/*.py            the voice tools: guide_me, phone_link, voice_lock, automations, earth, screen_sight
-  core/*.py               engines: voice_gate, automations, earth_geo/earth_data/earth_view, orb_hud, screen_sight, gui_call
+  actions/*.py            the voice tools: guide_me, phone_link, voice_lock, automations, earth, screen_sight, second_brain
+  core/*.py               engines: voice_gate, automations, earth_*, orb_hud, screen_sight, gui_call, vault, second_brain
+  second_brain/worker.py  the process that talks to Cognee (runs in Cognee's own environment)
   prompt_*.txt            the sections added to the assistant's instructions
 docs/                     one plain-text guide per feature
 tests/                    run_tests.bat -> tests/run_all.py (needs the installed Jarvis; some tests download sample data)

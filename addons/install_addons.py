@@ -14,7 +14,7 @@ HERE = Path(__file__).resolve().parent
 ANCHOR = "[TAGGED MESSAGES]"
 SECTIONS = [("[WALKTHROUGHS]", "prompt_walkthroughs.txt"), ("[PHONE LINK]", "prompt_phone.txt"),
             ("[AUTOMATIONS]", "prompt_automations.txt"), ("[VOICE LOCK]", "prompt_voicelock.txt"),
-            ("[EARTH]", "prompt_earth.txt"), ("[SCREEN SIGHT]", "prompt_sight.txt")]
+            ("[EARTH]", "prompt_earth.txt"), ("[SCREEN SIGHT]", "prompt_sight.txt"), ("[SECOND BRAIN]", "prompt_secondbrain.txt")]
 PYNPUT = 'pynput; sys_platform != "win32"'
 
 
@@ -428,6 +428,11 @@ def main() -> int:
         for src in sorted((HERE / sub).glob("*.py")):
             shutil.copyfile(src, app / sub / src.name)
             print(f"  {sub}/{src.name} installed")
+    sb_worker = HERE / "second_brain" / "worker.py"
+    if sb_worker.exists():                                     # Cognee's worker; Cognee itself is installed later, only if asked
+        (app / "second_brain").mkdir(exist_ok=True)
+        shutil.copyfile(sb_worker, app / "second_brain" / "worker.py")
+        print("  second_brain/worker.py installed")
     for note in patch_prompt(app):
         print(" ", note)
     for note in patch_main(app):

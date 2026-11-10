@@ -14,6 +14,7 @@
   Natural Earth imagery (via the `three-globe` and `globe.gl` sample repositories), USGS earthquake feeds,
   CelesTrak orbit data, adsb.lol, Open-Meteo, Esri World Imagery and CARTO map tiles (attribution is drawn
   on screen), and the WeSpeaker speaker-recognition model via sherpa-onnx.
+* **Cognee** (Apache-2.0, <https://github.com/topoteretes/cognee>) is installed on request into its own folder, not bundled; **Obsidian** is not bundled either: Jarvis writes ordinary Markdown files and opens them through `obsidian://` links.
 
 ## Licence for the add-ons in this repository
 
